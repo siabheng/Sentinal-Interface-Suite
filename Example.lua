@@ -1,7 +1,7 @@
 -- Lumen Interface Suite | Full example
 -- Load the library from the Sentinal-Interface-Suite repository.
 
-local Lumen = loadstring(game:HttpGet("https://raw.githubusercontent.com/siabheng/Sentinal-Interface-Suite/refs/heads/main/source.lua", true))()
+local Lumen = loadstring(game:HttpGet("https://raw.githubusercontent.com/siabheng/Sentinal-Interface-Suite/refs/heads/main/Source.lua", true))()
 
 local Window = Lumen:CreateWindow({
 	Name = "Lumen Example",
