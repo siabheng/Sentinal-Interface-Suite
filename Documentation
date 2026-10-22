@@ -1,0 +1,345 @@
+# Lumen Interface Suite
+
+> A clean, dependency-free UI library for Roblox.
+> **This documentation is up to date for release `1.0.0`.**
+
+Use the GitHub table-of-contents button (top right of this file) to navigate.
+
+## Introduction
+
+### Why choose Lumen?
+
+- **Reliable and stable.** Every callback is wrapped in `pcall`, so one bad callback never breaks your script.
+- **Beautiful design.** Rounded cards, smooth tweens, five built-in themes and live theme switching.
+- **Open source.** MIT licensed, a single readable file.
+- **Zero dependencies.** No hosted models, no icon packs and no extra HTTP requests. Every control is built in code.
+- **Real features.** Key system, config saving with autoload, notifications, searchable dropdowns and a color picker.
+- **Smooth performance.** No per-frame loops. Everything is event-driven.
+
+Now let's get started.
+
+## Table of contents
+
+1. [Booting the library](#booting-the-library)
+2. [Creating a window](#creating-a-window)
+3. [Tabs and sections](#tabs-and-sections)
+4. [Elements](#elements)
+5. [Notifications](#notifications)
+6. [Key system](#key-system)
+7. [Configuration saving](#configuration-saving)
+8. [Themes](#themes)
+9. [Flags and `Lumen.Options`](#flags-and-lumenoptions)
+10. [Cleanup](#cleanup)
+11. [Full example](#full-example)
+
+## Booting the library
+
+Replace `YOUR_USER/YOUR_REPO` with your own GitHub details after you upload `source.lua`.
+
+```lua
+local Lumen = loadstring(game:HttpGet("https://raw.githubusercontent.com/YOUR_USER/YOUR_REPO/refs/heads/main/source.lua", true))()
+```
+
+## Creating a window
+
+```lua
+local Window = Lumen:CreateWindow({
+	Name = "My Hub",
+	Subtitle = "v1.0",
+	ToggleKey = Enum.KeyCode.RightShift, -- show / hide the window
+	ConfigFolder = "MyHub",              -- folder used for configs and keys
+	Size = UDim2.fromOffset(640, 420),   -- optional
+
+	KeySystem = false,
+	KeySettings = {},                    -- see "Key system"
+})
+```
+
+| Setting | Type | Default | Description |
+| --- | --- | --- | --- |
+| `Name` | string | `"Lumen Window"` | Title shown in the top bar. |
+| `Subtitle` | string | `""` | Small text on the right of the top bar. |
+| `Size` | UDim2 | `640 x 420` | Window size. It shrinks to fit small screens. |
+| `ToggleKey` | KeyCode | `RightShift` | Key that shows or hides the window. |
+| `ConfigFolder` | string | `"Lumen"` | Folder for saved configs and keys. |
+| `KeySystem` | boolean | `false` | Require a key before the window opens. |
+| `KeySettings` | table | `{}` | Key system options. |
+
+Window methods:
+
+```lua
+Window:SetVisible(true)
+Window:Toggle()
+Window:SetToggleKey(Enum.KeyCode.K)
+Window:Destroy()
+```
+
+## Tabs and sections
+
+```lua
+local Main = Window:CreateTab({ Name = "Main", Icon = "★" }) -- Icon is optional, any short text or emoji
+
+Main:CreateSection("Combat") -- returns a Section
+```
+
+`CreateSection` returns a section object. It has all the same `Create...` methods as a tab, so these two lines are equivalent:
+
+```lua
+Main:CreateButton({ Name = "Hello" })
+
+local Section = Main:CreateSection("Extras")
+Section:CreateButton({ Name = "Hello" })
+```
+
+Sections add a heading. Elements keep appearing in the order you create them.
+
+`Tab:Activate()` switches to a tab. The first tab you create opens automatically.
+
+## Elements
+
+Every element is created on a tab or a section. Every element returns an object with `:Set(...)` and `:Destroy()`.
+
+Elements that store a value (Toggle, Slider, Input, Bind, Dropdown, ColorPicker) take an optional **flag** as the second argument. Flagged elements are saved by configs and available in `Lumen.Options`.
+
+### Button
+
+```lua
+local Button = Main:CreateButton({
+Name = "Teleport",
+Description = "Optional description",
+Callback = function()
+print("Clicked")
+end,
+})
+
+Button:Set({ Name = "New name" })
+```
+
+### Toggle
+
+```lua
+local Toggle = Main:CreateToggle({
+Name = "God Mode",
+Description = "Optional",
+CurrentValue = false,
+Callback = function(value) -- boolean
+print(value)
+end,
+}, "GodMode")
+
+Toggle:Set(true)
+print(Toggle.CurrentValue)
+```
+
+### Slider
+
+```lua
+local Slider = Main:CreateSlider({
+Name = "WalkSpeed",
+Range = { 16, 200 },
+Increment = 1,
+Suffix = " studs",
+CurrentValue = 16,
+Callback = function(value)
+print(value)
+end,
+}, "WalkSpeed")
+
+Slider:Set(100)
+```
+
+### Input
+
+```lua
+local Input = Main:CreateInput({
+Name = "Target",
+PlaceholderText = "Username",
+CurrentValue = "",
+Numeric = false,         -- digits only
+MaxCharacters = 20,      -- optional
+Enter = false,           -- true: callback only fires when Enter is pressed
+ClearOnFocusLost = false,
+Callback = function(text)
+print(text)
+end,
+}, "Target")
+
+Input:Set("Roblox")
+```
+
+### Bind (keybind)
+
+```lua
+local Bind = Main:CreateBind({
+Name = "Fly",
+CurrentBind = "F",       -- name of an Enum.KeyCode
+HoldToInteract = false,  -- false: toggles true/false each press. true: true while held
+Callback = function(active)
+print(active)
+end,
+OnChangedCallback = function(keyCode)
+print("Rebound to", keyCode.Name)
+end,
+}, "FlyBind")
+```
+
+Click the key box to rebind. Press `Escape` to cancel.
+
+### Dropdown
+
+```lua
+local Dropdown = Main:CreateDropdown({
+Name = "Mode",
+Options = { "Legit", "Rage", "Silent" },
+CurrentOption = "Legit",     -- string, or a table when MultipleOptions = true
+MultipleOptions = false,
+SpecialType = nil,           -- "Player" fills the list with players and keeps it updated
+Callback = function(value)   -- string, or a table of strings when MultipleOptions = true
+print(value)
+end,
+}, "Mode")
+
+Dropdown:Set("Rage")
+Dropdown:Refresh({ "A", "B", "C" })          -- replace the options
+Dropdown:Refresh({ "A", "B" }, true)         -- keep the current selection
+```
+
+The dropdown has a built-in search box.
+
+### Color Picker
+
+```lua
+local Picker = Main:CreateColorPicker({
+Name = "ESP Colour",
+Color = Color3.fromRGB(98, 120, 255),
+Callback = function(color) -- Color3
+print(color)
+end,
+}, "ESPColour")
+
+Picker:Set(Color3.fromRGB(255, 0, 0))
+```
+
+The picker has an HSV square, a hue bar and a hex box.
+
+### Label
+
+```lua
+local Label = Main:CreateLabel({ Text = "Hello", Style = "Default" }) -- Default, Info, Success, Warning, Error
+Label:Set("New text")
+```
+
+### Paragraph
+
+```lua
+local Paragraph = Main:CreateParagraph({ Title = "About", Text = "Long text wraps and grows automatically." })
+Paragraph:Set({ Title = "New title", Text = "New text" })
+```
+
+### Divider
+
+```lua
+Main:CreateDivider()
+```
+
+## Notifications
+
+```lua
+Lumen:Notify({
+Title = "Loaded",
+Content = "Everything is ready.",
+Duration = 4,        -- seconds
+Type = "Success",    -- Info, Success, Warning, Error
+})
+```
+
+## Key system
+
+```lua
+local Window = Lumen:CreateWindow({
+Name = "My Hub",
+KeySystem = true,
+KeySettings = {
+Title = "My Hub",
+Subtitle = "Key System",
+Note = "Join our Discord to get a key.",
+Key = { "KEY-1", "KEY-2" }, -- accepted keys
+SaveKey = true,             -- remember a valid key between sessions
+FileName = "key",
+Link = "https://example.com/get-key", -- optional: adds a Get Key button that copies this
+},
+})
+```
+
+`CreateWindow` waits until a valid key is entered, so the code after it only runs for valid users.
+
+> **Security note:** a key list stored inside a client script is visible to anyone who reads the script. For anything that matters, validate keys on a server (for example with a key-service provider) inside your own `Callback`/script logic.
+
+## Configuration saving
+
+Config saving needs an executor with file functions (`writefile`, `readfile` and so on). Every element you gave a **flag** is saved.
+
+```lua
+Lumen:SaveConfig("legit")        -- returns true, or false + error
+Lumen:LoadConfig("legit")        -- returns true, or false + error
+Lumen:ListConfigs()              -- { "legit", ... }
+Lumen:DeleteConfig("legit")
+Lumen:SetAutoload("legit")
+Lumen:LoadAutoload()             -- call after building your UI
+```
+
+Files are stored in `<ConfigFolder>/settings/<name>.json`.
+
+### Prebuilt config manager
+
+One call builds a full config UI (create, load, overwrite, autoload, refresh):
+
+```lua
+local Settings = Window:CreateTab({ Name = "Settings" })
+Lumen:BuildConfigSection(Settings)
+```
+
+## Themes
+
+Built-in themes: `Dark`, `Midnight`, `Rose`, `Emerald`, `Light`.
+
+```lua
+Lumen:SetTheme("Midnight")
+Lumen:SetTheme({ Accent = Color3.fromRGB(255, 120, 80) }) -- override single colours
+Lumen:GetTheme()
+```
+
+Theme keys: `Background`, `Surface`, `Element`, `ElementHover`, `Stroke`, `Hover`, `Text`, `SubText`, `Accent`, `Success`, `Warning`, `Danger`.
+
+Prebuilt theme switcher with a theme dropdown and accent colour picker:
+
+```lua
+Lumen:BuildThemeSection(Settings)
+```
+
+## Flags and Lumen.Options
+
+```lua
+Main:CreateToggle({ Name = "ESP", CurrentValue = true }, "ESP")
+
+print(Lumen.Options.ESP.CurrentValue)
+Lumen.Options.ESP:Set(false)
+```
+
+Reading values: Toggle `.CurrentValue`, Slider `.CurrentValue`, Input `.CurrentValue`, Bind `.CurrentBind`, Dropdown `.CurrentOption`, ColorPicker `.Color`.
+
+Use a **unique** flag for each element.
+
+## Cleanup
+
+```lua
+Lumen:Destroy() -- disconnects everything and removes the interface
+```
+
+## Full example
+
+See [`example.lua`](example.lua).
+
+## License
+
+MIT. See [`LICENSE`](LICENSE).
