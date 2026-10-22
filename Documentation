@@ -22,7 +22,7 @@
 Use this loader to fetch the library from GitHub:
 
 ```lua
-local Lumen = loadstring(game:HttpGet("https://raw.githubusercontent.com/siabheng/Sentinal-Interface-Suite/refs/heads/main/Source.lua", true))()
+local Lumen = loadstring(game:HttpGet("https://raw.githubusercontent.com/siabheng/Sentinal-Interface-Suite/refs/heads/main/source.lua", true))()
 ```
 
 > This loads the library so you can create windows and interface elements.
