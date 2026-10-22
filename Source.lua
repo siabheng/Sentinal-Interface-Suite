@@ -5,7 +5,7 @@
 
 	- No external assets or models: every control is built in code
 	- Windows, tabs, sections and 10 ready-made elements
-	- Notifications, key system, config saving, themes
+	- Notifications, key system, config saving
 	- MIT licensed
 
 	Documentation: see README.md
@@ -20,83 +20,54 @@ local UserInputService = game:GetService("UserInputService")
 local RunService = game:GetService("RunService")
 local HttpService = game:GetService("HttpService")
 local CoreGui = game:GetService("CoreGui")
-local Lighting = game:GetService("Lighting")
 
 local LocalPlayer = Players.LocalPlayer
 
 local Lumen = { Version = Release, Options = {}, Folder = "Lumen" }
 
-----------------------------------------------------------------------
--- Themes
+-- Fixed dark palette
 ----------------------------------------------------------------------
 
-local Themes = {
-	Dark = {
-		Background = Color3.fromRGB(17, 17, 23), Surface = Color3.fromRGB(24, 24, 32),
-		Element = Color3.fromRGB(30, 30, 40), ElementHover = Color3.fromRGB(38, 38, 50),
-		Stroke = Color3.fromRGB(48, 48, 62), Hover = Color3.fromRGB(70, 70, 92),
-		Text = Color3.fromRGB(236, 236, 244), SubText = Color3.fromRGB(150, 150, 168),
-		Accent = Color3.fromRGB(98, 120, 255), Success = Color3.fromRGB(72, 199, 142),
-		Warning = Color3.fromRGB(245, 181, 68), Danger = Color3.fromRGB(237, 86, 94),
-	},
-	Midnight = {
-		Background = Color3.fromRGB(8, 10, 20), Surface = Color3.fromRGB(13, 17, 32),
-		Element = Color3.fromRGB(18, 24, 44), ElementHover = Color3.fromRGB(25, 33, 58),
-		Stroke = Color3.fromRGB(34, 44, 78), Hover = Color3.fromRGB(60, 76, 130),
-		Text = Color3.fromRGB(230, 236, 255), SubText = Color3.fromRGB(133, 146, 184),
-		Accent = Color3.fromRGB(64, 156, 255),
-	},
-	Rose = {
-		Background = Color3.fromRGB(22, 15, 20), Surface = Color3.fromRGB(30, 21, 28),
-		Element = Color3.fromRGB(38, 27, 36), ElementHover = Color3.fromRGB(48, 34, 45),
-		Stroke = Color3.fromRGB(66, 46, 61), Hover = Color3.fromRGB(98, 68, 90),
-		Text = Color3.fromRGB(248, 236, 243), SubText = Color3.fromRGB(177, 148, 166),
-		Accent = Color3.fromRGB(244, 99, 151),
-	},
-	Emerald = {
-		Background = Color3.fromRGB(12, 19, 17), Surface = Color3.fromRGB(17, 27, 24),
-		Element = Color3.fromRGB(22, 35, 31), ElementHover = Color3.fromRGB(29, 45, 40),
-		Stroke = Color3.fromRGB(38, 60, 53), Hover = Color3.fromRGB(56, 92, 81),
-		Text = Color3.fromRGB(233, 247, 242), SubText = Color3.fromRGB(142, 172, 162),
-		Accent = Color3.fromRGB(52, 211, 153),
-	},
-	Light = {
-		Background = Color3.fromRGB(244, 245, 249), Surface = Color3.fromRGB(255, 255, 255),
-		Element = Color3.fromRGB(255, 255, 255), ElementHover = Color3.fromRGB(238, 240, 247),
-		Stroke = Color3.fromRGB(218, 221, 232), Hover = Color3.fromRGB(183, 188, 208),
-		Text = Color3.fromRGB(28, 30, 40), SubText = Color3.fromRGB(104, 110, 130),
-		Accent = Color3.fromRGB(79, 100, 240),
-	},
+local Theme = {
+	Background = Color3.fromRGB(17, 17, 23), Surface = Color3.fromRGB(24, 24, 32),
+	Element = Color3.fromRGB(30, 30, 40), ElementHover = Color3.fromRGB(38, 38, 50),
+	Stroke = Color3.fromRGB(48, 48, 62), Hover = Color3.fromRGB(70, 70, 92),
+	Text = Color3.fromRGB(236, 236, 244), SubText = Color3.fromRGB(150, 150, 168),
+	Accent = Color3.fromRGB(98, 120, 255), Success = Color3.fromRGB(72, 199, 142),
+	Warning = Color3.fromRGB(245, 181, 68), Danger = Color3.fromRGB(237, 86, 94),
 }
 
-for _, theme in pairs(Themes) do
-	for key, value in pairs(Themes.Dark) do
-		if theme[key] == nil then theme[key] = value end
-	end
-end
-
-local Theme = {}
-for key, value in pairs(Themes.Dark) do Theme[key] = value end
-
-Lumen.Themes = Themes
+local MaterialIcons = {
+	account_circle = "rbxassetid://6022668898",
+	bolt = "rbxassetid://6035047381",
+	check_circle = "rbxassetid://6023426945",
+	code = "rbxassetid://6022668955",
+	dashboard = "rbxassetid://6022668883",
+	favorite = "rbxassetid://6023426974",
+	help = "rbxassetid://6026568201",
+	help_outline = "rbxassetid://6026568201",
+	home = "rbxassetid://6026568195",
+	info = "rbxassetid://6026568227",
+	lock = "rbxassetid://6026568224",
+	menu = "rbxassetid://6031097225",
+	notifications = "rbxassetid://6034308946",
+	palette = "rbxassetid://6034316009",
+	people = "rbxassetid://6034287513",
+	search = "rbxassetid://6031154871",
+	settings = "rbxassetid://6031280882",
+	star = "rbxassetid://6031068423",
+	visibility = "rbxassetid://6031075931",
+}
 
 ----------------------------------------------------------------------
 -- Helpers
 ----------------------------------------------------------------------
 
 local Connections = {}
-local ThemeListeners = {}
-local Registry = setmetatable({}, { __mode = "k" }) -- instance -> { Property = ThemeKey }
-local WindowBlur
 
 local function Track(connection)
 	Connections[#Connections + 1] = connection
 	return connection
-end
-
-local function OnTheme(fn)
-	ThemeListeners[fn] = true
-	return function() ThemeListeners[fn] = nil end
 end
 
 local function Defaults(defaults, passed)
@@ -139,8 +110,8 @@ local function Create(class, props, children)
 		end
 	end
 	if TextClasses[class] then
-		instance.Font = Enum.Font.Gotham
-		instance.TextSize = 13
+		instance.Font = Enum.Font.GothamMedium
+		instance.TextSize = 14
 		if class == "TextButton" then
 			instance.AutoButtonColor = false
 			instance.Text = ""
@@ -160,7 +131,6 @@ local function Create(class, props, children)
 		if property ~= "Theme" and property ~= "Parent" then instance[property] = value end
 	end
 	if next(themed) then
-		Registry[instance] = themed
 		for property, key in pairs(themed) do instance[property] = Theme[key] end
 	end
 
@@ -214,31 +184,6 @@ local function Hoverable(frame, stroke)
 		Tween(frame, { BackgroundColor3 = Theme.Element }, 0.15)
 		if stroke then Tween(stroke, { Color = Theme.Stroke }, 0.15) end
 	end))
-end
-
-----------------------------------------------------------------------
--- Theme API
-----------------------------------------------------------------------
-
-function Lumen:SetTheme(themeOrName)
-	local source = type(themeOrName) == "string" and Themes[themeOrName] or themeOrName
-	if type(source) ~= "table" then return false end
-	for key, value in pairs(source) do
-		if Theme[key] ~= nil then Theme[key] = value end
-	end
-	for instance, map in pairs(Registry) do
-		for property, key in pairs(map) do
-			pcall(function() instance[property] = Theme[key] end)
-		end
-	end
-	for fn in pairs(ThemeListeners) do pcall(fn) end
-	return true
-end
-
-function Lumen:GetTheme()
-	local copy = {}
-	for key, value in pairs(Theme) do copy[key] = value end
-	return copy
 end
 
 ----------------------------------------------------------------------
@@ -394,14 +339,6 @@ function Lumen:CreateWindow(settings)
 
 	Lumen.Folder = settings.ConfigFolder
 
-	if WindowBlur then
-		WindowBlur:Destroy()
-	end
-	WindowBlur = Instance.new("BlurEffect")
-	WindowBlur.Name = "LumenWindowBlur"
-	WindowBlur.Size = 5
-	WindowBlur.Parent = Lighting
-
 	local Window = { Tabs = {}, Visible = true, ToggleKey = settings.ToggleKey }
 	local viewport = workspace.CurrentCamera and workspace.CurrentCamera.ViewportSize or Vector2.new(1280, 720)
 	local width = math.min(settings.Size.X.Offset, viewport.X - 40)
@@ -414,12 +351,12 @@ function Lumen:CreateWindow(settings)
 	}, { Corner(16), Stroke("Stroke") })
 
 	local Topbar = Create("Frame", {
-		Name = "Topbar", Size = UDim2.new(1, 0, 0, 44), BackgroundTransparency = 0.16,
+		Name = "Topbar", Size = UDim2.new(1, 0, 0, 44), BackgroundTransparency = 0,
 		ClipsDescendants = true, Theme = { BackgroundColor3 = "Surface" }, Parent = Main,
 	}, { Corner(16) })
 	Create("Frame", {
 		Name = "BottomFill", Position = UDim2.new(0, 0, 0, 16), Size = UDim2.new(1, 0, 1, -16),
-		BackgroundTransparency = 0.16, Theme = { BackgroundColor3 = "Surface" }, Parent = Topbar,
+		BackgroundTransparency = 0, Theme = { BackgroundColor3 = "Surface" }, Parent = Topbar,
 	})
 	Create("Frame", {
 		AnchorPoint = Vector2.new(0, 1), Position = UDim2.fromScale(0, 1), Size = UDim2.new(1, 0, 0, 1),
@@ -457,11 +394,11 @@ function Lumen:CreateWindow(settings)
 
 	local Sidebar = Create("Frame", {
 		Name = "Sidebar", Position = UDim2.fromOffset(0, 44), Size = UDim2.new(0, 158, 1, -44),
-		BackgroundTransparency = 0.16, ClipsDescendants = true,
+		BackgroundTransparency = 0, ClipsDescendants = true,
 		Theme = { BackgroundColor3 = "Surface" }, Parent = Main,
 	}, { Corner(16) })
 	Create("Frame", {
-		Name = "TopFill", Size = UDim2.new(1, 0, 0, 16), BackgroundTransparency = 0.16,
+		Name = "TopFill", Size = UDim2.new(1, 0, 0, 16), BackgroundTransparency = 0,
 		Theme = { BackgroundColor3 = "Surface" }, Parent = Sidebar,
 	})
 	Create("Frame", {
@@ -488,13 +425,13 @@ function Lumen:CreateWindow(settings)
 	function Window:SetVisible(state)
 		Window.Visible = state
 		Main.Visible = state
-		if WindowBlur then WindowBlur.Enabled = state end
 	end
 	function Window:Toggle() Window:SetVisible(not Window.Visible) end
 
-	Track(UserInputService.InputBegan:Connect(function(input, processed)
-		if processed then return end
-		if input.KeyCode == Window.ToggleKey then Window:Toggle() end
+	Track(UserInputService.InputBegan:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Window.ToggleKey then
+			Window:Toggle()
+		end
 	end))
 
 	Track(CloseButton.MouseButton1Click:Connect(function()
@@ -583,7 +520,6 @@ function Lumen:CreateWindow(settings)
 					Theme = { BackgroundColor3 = accent and "Accent" or "Element" }, Parent = row,
 				}, { Corner(8) })
 				if accent then
-					Registry[button] = { BackgroundColor3 = "Accent" }
 					button.TextColor3 = Color3.new(1, 1, 1)
 				end
 				return button
@@ -639,14 +575,26 @@ function Lumen:CreateWindow(settings)
 			other.Page.Visible = active
 			Tween(other.Button, { BackgroundTransparency = active and 0.2 or 1 }, 0.15)
 			Tween(other.Label, { TextColor3 = active and Theme.Text or Theme.SubText }, 0.15)
+			if other.Icon then Tween(other.Icon, { ImageColor3 = active and Theme.Text or Theme.SubText }, 0.15) end
 			Tween(other.Bar, { BackgroundTransparency = active and 0 or 1 }, 0.15)
 		end
 		Window.CurrentTab = tab
 	end
 
 	function Window:CreateTab(tabSettings)
-		tabSettings = Defaults({ Name = "Tab", Icon = nil }, tabSettings)
+		tabSettings = Defaults({ Name = "Tab", Icon = nil, IconSource = "Text" }, tabSettings)
 		local Tab = { Name = tabSettings.Name }
+		local materialIcon
+		if tabSettings.IconSource == "Material" and tabSettings.Icon ~= nil then
+			local iconName = string.lower(tostring(tabSettings.Icon))
+			materialIcon = MaterialIcons[iconName]
+			if not materialIcon and iconName:match("^%d+$") then
+				materialIcon = "rbxassetid://" .. iconName
+			end
+			if not materialIcon then
+				warn("[Lumen] Unknown Material icon '" .. tostring(tabSettings.Icon) .. "'.")
+			end
+		end
 
 		local button = Create("TextButton", {
 			Name = tabSettings.Name, Size = UDim2.new(1, 0, 0, 34), BackgroundTransparency = 1,
@@ -657,11 +605,20 @@ function Lumen:CreateWindow(settings)
 			BackgroundTransparency = 1, Theme = { BackgroundColor3 = "Accent" }, Parent = button,
 		}, { Corner(4) })
 		local label = Create("TextLabel", {
-			Text = (tabSettings.Icon and (tabSettings.Icon .. "  ") or "") .. tabSettings.Name,
-			Font = Enum.Font.GothamMedium, Position = UDim2.fromOffset(14, 0), Size = UDim2.new(1, -14, 1, 0),
+			Text = (tabSettings.Icon and not materialIcon and (tostring(tabSettings.Icon) .. "  ") or "") .. tabSettings.Name,
+			Font = Enum.Font.GothamSemibold, Position = UDim2.fromOffset(materialIcon and 36 or 14, 0),
+			Size = UDim2.new(1, materialIcon and -42 or -14, 1, 0),
 			TextXAlignment = Enum.TextXAlignment.Left, TextTruncate = Enum.TextTruncate.AtEnd,
 			TextColor3 = Theme.SubText, Parent = button,
 		})
+		local icon
+		if materialIcon then
+			icon = Create("ImageLabel", {
+				Name = "MaterialIcon", Image = materialIcon, ImageColor3 = Theme.SubText,
+				Position = UDim2.fromOffset(12, 9), Size = UDim2.fromOffset(16, 16),
+				ScaleType = Enum.ScaleType.Fit, Parent = button,
+			})
+		end
 
 		local page = Create("ScrollingFrame", {
 			Name = tabSettings.Name, Size = UDim2.fromScale(1, 1), BackgroundTransparency = 1, BorderSizePixel = 0,
@@ -669,15 +626,21 @@ function Lumen:CreateWindow(settings)
 			Theme = { ScrollBarImageColor3 = "Hover" }, Visible = false, Parent = Content,
 		}, { Pad(14, 14, 14, 14), ListLayout(8) })
 
-		Tab.Page, Tab.Button, Tab.Label, Tab.Bar = page, button, label, bar
+		Tab.Page, Tab.Button, Tab.Label, Tab.Bar, Tab.Icon = page, button, label, bar, icon
 		Window.Tabs[#Window.Tabs + 1] = Tab
 
 		Track(button.MouseButton1Click:Connect(function() SelectTab(Tab) end))
 		Track(button.MouseEnter:Connect(function()
-			if Window.CurrentTab ~= Tab then Tween(label, { TextColor3 = Theme.Text }, 0.12) end
+			if Window.CurrentTab ~= Tab then
+				Tween(label, { TextColor3 = Theme.Text }, 0.12)
+				if icon then Tween(icon, { ImageColor3 = Theme.Text }, 0.12) end
+			end
 		end))
 		Track(button.MouseLeave:Connect(function()
-			if Window.CurrentTab ~= Tab then Tween(label, { TextColor3 = Theme.SubText }, 0.12) end
+			if Window.CurrentTab ~= Tab then
+				Tween(label, { TextColor3 = Theme.SubText }, 0.12)
+				if icon then Tween(icon, { ImageColor3 = Theme.SubText }, 0.12) end
+			end
 		end))
 
 		AddElements(Tab, page)
@@ -701,14 +664,9 @@ function Lumen:CreateWindow(settings)
 
 	function Window:Destroy() Lumen:Destroy() end
 
-	-- Re-colour tab labels when the theme changes
-	OnTheme(function()
-		if Window.CurrentTab then SelectTab(Window.CurrentTab) end
-	end)
-
 	Window.Main = Main
 
-	local home = Window:CreateTab({ Name = "Home", Icon = "⌂" })
+	local home = Window:CreateTab({ Name = "Home", Icon = "home", IconSource = "Material" })
 	home:CreateSection("Server")
 
 	local sessionStartedAt = os.clock()
@@ -822,7 +780,7 @@ end
 local function TitleAndDesc(frame, name, description, rightPadding)
 	local hasDesc = description ~= nil and description ~= ""
 	Create("TextLabel", {
-		Name = "Title", Text = tostring(name), Font = Enum.Font.GothamMedium,
+		Name = "Title", Text = tostring(name), Font = Enum.Font.GothamSemibold, TextSize = 14,
 		Position = UDim2.fromOffset(12, hasDesc and 7 or 0), Size = UDim2.new(1, -(rightPadding or 24), 0, hasDesc and 16 or 40),
 		TextXAlignment = Enum.TextXAlignment.Left, TextTruncate = Enum.TextTruncate.AtEnd, Parent = frame,
 	})
@@ -970,8 +928,6 @@ AddElements = function(target, page)
 		end
 
 		Track(click.MouseButton1Click:Connect(function() SetValue(not Toggle.CurrentValue) end))
-		OnTheme(function() Render(false) end)
-
 		function Toggle:Set(new)
 			if type(new) == "boolean" then return SetValue(new) end
 			new = Defaults(Toggle.Settings, new)
@@ -1334,8 +1290,6 @@ AddElements = function(target, page)
 				row.Visible = query == "" or name:lower():find(query, 1, true) ~= nil
 			end
 		end))
-		OnTheme(Paint)
-
 		if options.SpecialType == "Player" then
 			local function Refresh() options.Options = PlayerNames() Rebuild() end
 			Track(Players.PlayerAdded:Connect(Refresh))
@@ -1659,23 +1613,6 @@ function Lumen:BuildConfigSection(target)
 	})
 end
 
--- Adds a ready-made theme switcher to any tab or section.
-function Lumen:BuildThemeSection(target)
-	local names = {}
-	for name in pairs(Themes) do names[#names + 1] = name end
-	table.sort(names)
-
-	target:CreateDropdown({
-		Name = "Theme", Description = "Switch the interface colours instantly.",
-		Options = names, CurrentOption = "Dark",
-		Callback = function(value) Lumen:SetTheme(value) end,
-	})
-	target:CreateColorPicker({
-		Name = "Accent Colour", Color = Theme.Accent,
-		Callback = function(color) Lumen:SetTheme({ Accent = color }) end,
-	})
-end
-
 ----------------------------------------------------------------------
 -- Cleanup
 ----------------------------------------------------------------------
@@ -1683,12 +1620,7 @@ end
 function Lumen:Destroy()
 	for _, connection in ipairs(Connections) do pcall(function() connection:Disconnect() end) end
 	table.clear(Connections)
-	table.clear(ThemeListeners)
 	Gui:Destroy()
-	if WindowBlur then
-		WindowBlur:Destroy()
-		WindowBlur = nil
-	end
 end
 
 return Lumen
