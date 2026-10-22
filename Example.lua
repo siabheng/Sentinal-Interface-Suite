@@ -12,9 +12,9 @@ local Window = Lumen:CreateWindow({
 	-- KeySettings = { Key = { "KEY-1" }, Note = "Enter your key.", SaveKey = true },
 })
 
-local Main = Window:CreateTab({ Name = "Main", Icon = "★" })
-local Visuals = Window:CreateTab({ Name = "Visuals", Icon = "◆" })
-local Settings = Window:CreateTab({ Name = "Settings", Icon = "⚙" })
+local Main = Window:CreateTab({ Name = "Main", Icon = "dashboard", IconSource = "Material" })
+local Visuals = Window:CreateTab({ Name = "Visuals", Icon = "visibility", IconSource = "Material" })
+local Settings = Window:CreateTab({ Name = "Settings", Icon = "settings", IconSource = "Material" })
 
 -- Main ------------------------------------------------------------
 Main:CreateSection("Basics")
@@ -102,8 +102,6 @@ local About = Visuals:CreateParagraph({
 
 -- Settings --------------------------------------------------------
 Settings:CreateSection("Interface")
-Lumen:BuildThemeSection(Settings)
-
 Settings:CreateSection("Configuration")
 Lumen:BuildConfigSection(Settings)
 
