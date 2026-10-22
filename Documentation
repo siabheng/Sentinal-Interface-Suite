@@ -7,11 +7,11 @@
 
 ## Why Choose Lumen?
 
-Reliable And Stable  
-Beautiful Design  
-Open Source  
-Amazing Features like key system, custom configs, notifications, themes and more!  
-Smooth And Excellent Performance
+- Reliable and stable
+- Beautiful design
+- Open source
+- Useful features like a key system, custom configs, notifications, and themes
+- Smooth performance
 
 *Now Let's Get Started, Shall We?*
 
@@ -31,15 +31,16 @@ local Lumen = loadstring(game:HttpGet("https://raw.githubusercontent.com/siabhen
 
 1. [Booting the library](#booting-the-library)
 2. [Creating a window](#creating-a-window)
-3. [Tabs and sections](#tabs-and-sections)
-4. [Elements](#elements)
-5. [Notifications](#notifications)
-6. [Key system](#key-system)
-7. [Configuration saving](#configuration-saving)
-8. [Themes](#themes)
-9. [Flags and `Lumen.Options`](#flags-and-lumenoptions)
-10. [Cleanup](#cleanup)
-11. [Full example](#full-example)
+3. [Built-in Home tab](#built-in-home-tab)
+4. [Tabs and sections](#tabs-and-sections)
+5. [Elements](#elements)
+6. [Notifications](#notifications)
+7. [Key system](#key-system)
+8. [Configuration saving](#configuration-saving)
+9. [Themes](#themes)
+10. [Flags and `Lumen.Options`](#flags-and-lumenoptions)
+11. [Cleanup](#cleanup)
+12. [Full example](#full-example)
 
 ## Creating a window
 
@@ -50,6 +51,7 @@ local Window = Lumen:CreateWindow({
 	ToggleKey = Enum.KeyCode.RightShift, -- show / hide the window
 	ConfigFolder = "MyHub",              -- folder used for configs and keys
 	Size = UDim2.fromOffset(640, 420),   -- optional
+	DiscordLink = "https://discord.gg/Cj7t4Xvzpj",
 
 	KeySystem = false,
 	KeySettings = {},                    -- see "Key system"
@@ -63,6 +65,7 @@ local Window = Lumen:CreateWindow({
 | `Size` | UDim2 | `640 x 420` | Window size. It shrinks to fit small screens. |
 | `ToggleKey` | KeyCode | `RightShift` | Key that shows or hides the window. |
 | `ConfigFolder` | string | `"Lumen"` | Folder for saved configs and keys. |
+| `DiscordLink` | string | Project invite | Invite copied by the built-in Home tab's Discord button. |
 | `KeySystem` | boolean | `false` | Require a key before the window opens. |
 | `KeySettings` | table | `{}` | Key system options. |
 
@@ -74,6 +77,10 @@ Window:Toggle()
 Window:SetToggleKey(Enum.KeyCode.K)
 Window:Destroy()
 ```
+
+## Built-in Home tab
+
+Every window opens on a built-in Home tab with a session timer, online-friend count, and Discord invite button. The timer starts when `CreateWindow` runs; this client-side library cannot determine how long the player was in the server before it loaded. The friends count refreshes every 60 seconds. The Discord button needs clipboard support in the environment; it shows an error notification if copying is unavailable.
 
 ## Tabs and sections
 
