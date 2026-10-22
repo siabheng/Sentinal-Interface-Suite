@@ -871,11 +871,12 @@ AddElements = function(target, page)
 
 		local frame, stroke = Card(page, 40, target:NextOrder())
 		TitleAndDesc(frame, options.Name, options.Description, 50)
-		Create("ImageLabel", {
+		Create("TextLabel", {
 			Name = "Arrow", AnchorPoint = Vector2.new(1, 0.5),
-			Position = UDim2.new(1, -12, 0.5, 0), Size = UDim2.fromOffset(16, 16),
-			BackgroundTransparency = 1, Image = "rbxassetid://6031094680",
-			ImageColor3 = Theme.SubText, ScaleType = Enum.ScaleType.Fit, Parent = frame,
+			Position = UDim2.new(1, -12, 0.5, 0), Size = UDim2.fromOffset(20, 24),
+			BackgroundTransparency = 1, Text = "➤", Font = Enum.Font.GothamBold,
+			TextSize = 15, TextColor3 = Theme.SubText, TextXAlignment = Enum.TextXAlignment.Center,
+			TextYAlignment = Enum.TextYAlignment.Center, Parent = frame,
 		})
 		local click = Create("TextButton", { Size = UDim2.fromScale(1, 1), ZIndex = 5, Parent = frame })
 		Hoverable(frame, stroke)
@@ -1209,11 +1210,12 @@ AddElements = function(target, page)
 			Size = UDim2.new(0, 150, 0, closedHeight), TextXAlignment = Enum.TextXAlignment.Right,
 			TextTruncate = Enum.TextTruncate.AtEnd, Theme = { TextColor3 = "SubText" }, Parent = frame,
 		})
-		local chevron = Create("ImageLabel", {
+		local chevron = Create("TextLabel", {
 			Name = "Chevron", AnchorPoint = Vector2.new(1, 0.5),
-			Position = UDim2.new(1, -10, 0, closedHeight / 2), Size = UDim2.fromOffset(18, 18),
-			BackgroundTransparency = 1, Image = "rbxassetid://6031094687",
-			ImageColor3 = Theme.SubText, ScaleType = Enum.ScaleType.Fit, Parent = frame,
+			Position = UDim2.new(1, -10, 0, closedHeight / 2), Size = UDim2.fromOffset(20, 24),
+			BackgroundTransparency = 1, Text = "➤", Font = Enum.Font.GothamBold,
+			TextSize = 15, TextColor3 = Theme.SubText, TextXAlignment = Enum.TextXAlignment.Center,
+			TextYAlignment = Enum.TextYAlignment.Center, Rotation = 90, Parent = frame,
 		})
 		local header = Create("TextButton", { Size = UDim2.new(1, 0, 0, closedHeight), ZIndex = 5, Parent = frame })
 
@@ -1258,7 +1260,7 @@ AddElements = function(target, page)
 		local function Toggle(open)
 			isOpen = open
 			Tween(frame, { Size = UDim2.new(1, 0, 0, open and openHeight or closedHeight) }, 0.22)
-			Tween(chevron, { Rotation = open and 180 or 0 }, 0.22)
+			Tween(chevron, { Rotation = open and 270 or 90 }, 0.22)
 		end
 
 		local function Rebuild()
