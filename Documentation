@@ -1,35 +1,31 @@
-<div align="center">
+# Introduction
 
-<img src="lumen-cover.svg" alt="Lumen Interface Suite — a clean, dependency-free UI library for Roblox" width="100%">
+![Version](https://img.shields.io/badge/version-1.0.0-6c7cff?style=flat-square)
+![Platform](https://img.shields.io/badge/platform-Roblox-00A2FF?style=flat-square&logo=roblox&logoColor=white)
+![Language](https://img.shields.io/badge/language-Lua-5865F2?style=flat-square)
+![License](https://img.shields.io/badge/license-MIT-22c55e?style=flat-square)
 
-# Lumen Interface Suite
+## Why Choose Lumen?
 
-### A clean, dependency-free UI library for Roblox
+Reliable And Stable  
+Beautiful Design  
+Open Source  
+Amazing Features like key system, custom configs, notifications, themes and more!  
+Smooth And Excellent Performance
 
-Create polished Roblox interfaces with an approachable Lua API, built-in themes, and no external assets.
+*Now Let's Get Started, Shall We?*
 
-[![Version](https://img.shields.io/badge/version-1.0.0-6c7cff?style=flat-square)](CHANGELOG.md)
-[![Platform](https://img.shields.io/badge/platform-Roblox-00A2FF?style=flat-square&logo=roblox&logoColor=white)](https://www.roblox.com/)
-[![Language](https://img.shields.io/badge/language-Lua-5865F2?style=flat-square)](source.lua)
-[![License](https://img.shields.io/badge/license-MIT-22c55e?style=flat-square)](LICENSE)
+# Documentation For Lumen
 
-</div>
+## Booting The Library
 
-## Get started
-
-Replace `YOUR_USER/YOUR_REPO` with your GitHub username and repository, then copy the loader:
+Replace `YOUR_USER/YOUR_REPO` with your GitHub username and repository.
 
 ```lua
 local Lumen = loadstring(game:HttpGet("https://raw.githubusercontent.com/YOUR_USER/YOUR_REPO/refs/heads/main/source.lua", true))()
 ```
 
-GitHub adds a **Copy** button to code blocks like this one.
-
-## Why choose Lumen?
-
-| ✨ **Polished design** | 🧩 **Rich controls** |
-| --- | --- |
-| Rounded UI, smooth transitions, and five built-in themes.<br><br>⚡ **Lightweight:** event-driven, with no per-frame loops or external assets. | Buttons, toggles, sliders, inputs, dropdowns, color pickers, and more.<br><br>🛠️ **Ready-to-use:** notifications, key system, config saving, and autoload. |
+> This loads the library so you can create windows and interface elements.
 
 ## Table of contents
 
@@ -44,14 +40,6 @@ GitHub adds a **Copy** button to code blocks like this one.
 9. [Flags and `Lumen.Options`](#flags-and-lumenoptions)
 10. [Cleanup](#cleanup)
 11. [Full example](#full-example)
-
-## Booting the library
-
-Replace `YOUR_USER/YOUR_REPO` with your own GitHub details after you upload `source.lua`.
-
-```lua
-local Lumen = loadstring(game:HttpGet("https://raw.githubusercontent.com/YOUR_USER/YOUR_REPO/refs/heads/main/source.lua", true))()
-```
 
 ## Creating a window
 
