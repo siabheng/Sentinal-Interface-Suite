@@ -170,7 +170,7 @@ local function Create(class, props, children)
 end
 
 local function Corner(radius)
-	return Create("UICorner", { CornerRadius = UDim.new(0, radius or 6) })
+	return Create("UICorner", { CornerRadius = UDim.new(0, radius or 8) })
 end
 
 local function Stroke(key)
@@ -300,7 +300,7 @@ function Lumen:Notify(options)
 		Size = UDim2.new(1, 0, 0, 0), AutomaticSize = Enum.AutomaticSize.Y,
 		Position = UDim2.new(1, 40, 0, 0), Theme = { BackgroundColor3 = "Surface" }, Parent = wrapper,
 	}, {
-		Corner(8),
+		Corner(10),
 		Create("UIStroke", { Color = Theme[colorKey], Thickness = 1, Transparency = 0.4 }),
 	})
 	local body = Create("Frame", {
@@ -377,6 +377,7 @@ function Lumen:CreateWindow(settings)
 		ConfigFolder = "Lumen",
 		KeySystem = false,
 		KeySettings = {},
+		DiscordLink = "https://discord.gg/Cj7t4Xvzpj",
 	}, settings)
 
 	settings.KeySettings = Defaults({
@@ -400,7 +401,7 @@ function Lumen:CreateWindow(settings)
 		Name = "Window", AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.5),
 		Size = UDim2.fromOffset(width, height), ClipsDescendants = true,
 		Theme = { BackgroundColor3 = "Background" }, Parent = Gui,
-	}, { Corner(10), Stroke("Stroke") })
+	}, { Corner(14), Stroke("Stroke") })
 
 	local Topbar = Create("Frame", {
 		Name = "Topbar", Size = UDim2.new(1, 0, 0, 44), Theme = { BackgroundColor3 = "Surface" }, Parent = Main,
@@ -412,7 +413,7 @@ function Lumen:CreateWindow(settings)
 	Create("Frame", {
 		Position = UDim2.fromOffset(14, 14), Size = UDim2.fromOffset(16, 16),
 		Theme = { BackgroundColor3 = "Accent" }, Parent = Topbar,
-	}, { Corner(5) })
+	}, { Corner(7) })
 	Create("TextLabel", {
 		Text = settings.Name, Font = Enum.Font.GothamBold, TextSize = 14, Position = UDim2.fromOffset(38, 0),
 		Size = UDim2.new(0.5, 0, 1, 0), TextXAlignment = Enum.TextXAlignment.Left, Parent = Topbar,
@@ -429,7 +430,7 @@ function Lumen:CreateWindow(settings)
 			Text = text, Font = Enum.Font.GothamBold, TextSize = 14, AnchorPoint = Vector2.new(1, 0.5),
 			Position = UDim2.new(1, offset, 0.5, 0), Size = UDim2.fromOffset(28, 28), BackgroundTransparency = 1,
 			Theme = { TextColor3 = "SubText", BackgroundColor3 = "ElementHover" }, Parent = Topbar,
-		}, { Corner(6) })
+		}, { Corner(8) })
 		Track(button.MouseEnter:Connect(function() Tween(button, { BackgroundTransparency = 0 }, 0.12) end))
 		Track(button.MouseLeave:Connect(function() Tween(button, { BackgroundTransparency = 1 }, 0.12) end))
 		return button
@@ -522,7 +523,7 @@ function Lumen:CreateWindow(settings)
 				AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.5),
 				Size = UDim2.fromOffset(340, 0), AutomaticSize = Enum.AutomaticSize.Y,
 				Theme = { BackgroundColor3 = "Surface" }, ZIndex = 51, Parent = Overlay,
-			}, { Corner(10), Stroke("Stroke"), Pad(20, 20, 20, 20), ListLayout(8) })
+			}, { Corner(12), Stroke("Stroke"), Pad(20, 20, 20, 20), ListLayout(8) })
 
 			Create("TextLabel", {
 				Text = ks.Title, Font = Enum.Font.GothamBold, TextSize = 18, Size = UDim2.new(1, 0, 0, 24),
@@ -542,7 +543,7 @@ function Lumen:CreateWindow(settings)
 				Text = "", PlaceholderText = "Enter key...", ClearTextOnFocus = false, Size = UDim2.new(1, 0, 0, 36),
 				BackgroundTransparency = 0, Theme = { BackgroundColor3 = "Element", PlaceholderColor3 = "SubText" },
 				LayoutOrder = 4, ZIndex = 52, Parent = card,
-			}, { Corner(6), Stroke("Stroke"), Pad(0, 10, 0, 10) })
+			}, { Corner(8), Stroke("Stroke"), Pad(0, 10, 0, 10) })
 			box.TextXAlignment = Enum.TextXAlignment.Left
 
 			local status = Create("TextLabel", {
@@ -559,7 +560,7 @@ function Lumen:CreateWindow(settings)
 					Text = text, Font = Enum.Font.GothamMedium, BackgroundTransparency = 0,
 					Size = UDim2.new(width, width == 1 and 0 or -4, 1, 0), ZIndex = 53,
 					Theme = { BackgroundColor3 = accent and "Accent" or "Element" }, Parent = row,
-				}, { Corner(6) })
+				}, { Corner(8) })
 				if accent then
 					Registry[button] = { BackgroundColor3 = "Accent" }
 					button.TextColor3 = Color3.new(1, 1, 1)
@@ -629,11 +630,11 @@ function Lumen:CreateWindow(settings)
 		local button = Create("TextButton", {
 			Name = tabSettings.Name, Size = UDim2.new(1, 0, 0, 34), BackgroundTransparency = 1,
 			Theme = { BackgroundColor3 = "Element" }, LayoutOrder = #Window.Tabs + 1, Parent = TabList,
-		}, { Corner(6) })
+		}, { Corner(8) })
 		local bar = Create("Frame", {
 			AnchorPoint = Vector2.new(0, 0.5), Position = UDim2.new(0, 0, 0.5, 0), Size = UDim2.fromOffset(3, 16),
 			BackgroundTransparency = 1, Theme = { BackgroundColor3 = "Accent" }, Parent = button,
-		}, { Corner(2) })
+		}, { Corner(4) })
 		local label = Create("TextLabel", {
 			Text = (tabSettings.Icon and (tabSettings.Icon .. "  ") or "") .. tabSettings.Name,
 			Font = Enum.Font.GothamMedium, Position = UDim2.fromOffset(14, 0), Size = UDim2.new(1, -14, 1, 0),
@@ -686,6 +687,97 @@ function Lumen:CreateWindow(settings)
 
 	Window.Main = Main
 
+	local home = Window:CreateTab({ Name = "Home", Icon = "⌂" })
+	home:CreateSection("Server")
+
+	local sessionStartedAt = os.clock()
+	local sessionInfo = home:CreateParagraph({
+		Title = "Time in this server",
+		Text = "00:00:00 (since interface loaded)",
+	})
+	local friendsInfo = home:CreateParagraph({
+		Title = "Friends online",
+		Text = "Checking...",
+	})
+
+	home:CreateSection("Community")
+	home:CreateButton({
+		Name = "Join our Discord",
+		Description = "Copy the invite link to your clipboard.",
+		Callback = function()
+			if type(setclipboard) ~= "function" then
+				Lumen:Notify({
+					Title = "Clipboard unavailable",
+					Content = "Your environment does not support copying links.",
+					Type = "Error",
+				})
+				return
+			end
+
+			local copied, err = pcall(setclipboard, settings.DiscordLink)
+			if not copied then
+				warn("[Lumen] Could not copy Discord invite: " .. tostring(err))
+				Lumen:Notify({
+					Title = "Copy failed",
+					Content = "The Discord invite could not be copied.",
+					Type = "Error",
+				})
+				return
+			end
+
+			Lumen:Notify({
+				Title = "Discord invite copied",
+				Content = "Paste the invite link to join our Discord server.",
+				Type = "Success",
+			})
+		end,
+	})
+
+	local function RefreshOnlineFriends()
+		local succeeded, pages = pcall(function()
+			return LocalPlayer:GetFriendsOnline()
+		end)
+		if not succeeded then
+			friendsInfo:Set({ Title = "Friends online", Text = "Could not load friend status." })
+			warn("[Lumen] Could not load online friends: " .. tostring(pages))
+			return
+		end
+
+		if type(pages) ~= "table" then
+			friendsInfo:Set({ Title = "Friends online", Text = "Could not load friend status." })
+			warn("[Lumen] Online friends API returned an unexpected result.")
+			return
+		end
+
+		local count = #pages
+		friendsInfo:Set({
+			Title = "Friends online",
+			Text = tostring(count) .. (count == 1 and " friend is online." or " friends are online."),
+		})
+	end
+
+	task.spawn(function()
+		RefreshOnlineFriends()
+		local nextFriendsRefresh = os.clock() + 60
+		while Main.Parent do
+			task.wait(1)
+			if not Main.Parent then break end
+
+			local elapsed = math.floor(os.clock() - sessionStartedAt)
+			local hours = math.floor(elapsed / 3600)
+			local minutes = math.floor((elapsed % 3600) / 60)
+			local seconds = elapsed % 60
+			sessionInfo:Set({
+				Title = "Time in this server",
+				Text = string.format("%02d:%02d:%02d (since interface loaded)", hours, minutes, seconds),
+			})
+
+			if os.clock() >= nextFriendsRefresh then
+				RefreshOnlineFriends()
+				nextFriendsRefresh = os.clock() + 60
+			end
+		end
+	end)
 
 	return Window
 end
@@ -700,7 +792,7 @@ local function Card(page, height, order)
 	local frame = Create("Frame", {
 		Size = UDim2.new(1, 0, 0, height or 40), Theme = { BackgroundColor3 = "Element" },
 		LayoutOrder = order, Parent = page,
-	}, { Corner(6) })
+	}, { Corner(8) })
 	local stroke = Stroke("Stroke")
 	stroke.Parent = frame
 	return frame, stroke
@@ -833,11 +925,11 @@ AddElements = function(target, page)
 		local track = Create("Frame", {
 			AnchorPoint = Vector2.new(1, 0.5), Position = UDim2.new(1, -12, 0.5, 0), Size = UDim2.fromOffset(38, 20),
 			Theme = { BackgroundColor3 = "Stroke" }, Parent = frame,
-		}, { Corner(10) })
+		}, { Corner(12) })
 		local knob = Create("Frame", {
 			AnchorPoint = Vector2.new(0, 0.5), Position = UDim2.new(0, 3, 0.5, 0), Size = UDim2.fromOffset(14, 14),
 			BackgroundColor3 = Color3.new(1, 1, 1), Parent = track,
-		}, { Corner(7) })
+		}, { Corner(9) })
 		local click = Create("TextButton", { Size = UDim2.fromScale(1, 1), ZIndex = 5, Parent = frame })
 		Hoverable(frame, stroke)
 
@@ -893,14 +985,14 @@ AddElements = function(target, page)
 		})
 		local bar = Create("Frame", {
 			Position = UDim2.new(0, 12, 0, 33), Size = UDim2.new(1, -24, 0, 6), Theme = { BackgroundColor3 = "Stroke" }, Parent = frame,
-		}, { Corner(3) })
+		}, { Corner(7) })
 		local fill = Create("Frame", {
 			Size = UDim2.fromScale(0, 1), Theme = { BackgroundColor3 = "Accent" }, Parent = bar,
-		}, { Corner(3) })
+		}, { Corner(7) })
 		local knob = Create("Frame", {
 			AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0, 0.5), Size = UDim2.fromOffset(12, 12),
 			BackgroundColor3 = Color3.new(1, 1, 1), Parent = bar,
-		}, { Corner(6) })
+		}, { Corner(8) })
 		Hoverable(frame, stroke)
 
 		local min, max = options.Range[1], options.Range[2]
@@ -982,7 +1074,7 @@ AddElements = function(target, page)
 		local boxFrame = Create("Frame", {
 			AnchorPoint = Vector2.new(1, 0.5), Position = UDim2.new(1, -10, 0.5, 0), Size = UDim2.fromOffset(140, 26),
 			Theme = { BackgroundColor3 = "Background" }, Parent = frame,
-		}, { Corner(5), Stroke("Stroke"), Pad(0, 8, 0, 8) })
+		}, { Corner(7), Stroke("Stroke"), Pad(0, 8, 0, 8) })
 		local box = Create("TextBox", {
 			Text = Input.CurrentValue, PlaceholderText = options.PlaceholderText, ClearTextOnFocus = false, TextSize = 12,
 			Size = UDim2.fromScale(1, 1), TextXAlignment = Enum.TextXAlignment.Left, TextTruncate = Enum.TextTruncate.AtEnd,
@@ -1039,7 +1131,7 @@ AddElements = function(target, page)
 			AnchorPoint = Vector2.new(1, 0.5), Position = UDim2.new(1, -10, 0.5, 0), Size = UDim2.fromOffset(70, 26),
 			Font = Enum.Font.GothamMedium, TextSize = 12, BackgroundTransparency = 0, Text = options.CurrentBind,
 			Theme = { BackgroundColor3 = "Background" }, Parent = frame,
-		}, { Corner(5), Stroke("Stroke") })
+		}, { Corner(7), Stroke("Stroke") })
 		Hoverable(frame, stroke)
 
 		local listening = false
@@ -1197,7 +1289,7 @@ AddElements = function(target, page)
 				local row = Create("TextButton", {
 					Text = name, TextSize = 12, Size = UDim2.new(1, 0, 0, 24), BackgroundTransparency = 1, LayoutOrder = index,
 					TextXAlignment = Enum.TextXAlignment.Left, Theme = { BackgroundColor3 = "Accent" }, Parent = list,
-				}, { Corner(4), Pad(0, 0, 0, 8) })
+				}, { Corner(6), Pad(0, 0, 0, 8) })
 				rows[name] = row
 				Track(row.MouseButton1Click:Connect(function()
 					if options.MultipleOptions then
@@ -1266,7 +1358,7 @@ AddElements = function(target, page)
 		local swatch = Create("Frame", {
 			AnchorPoint = Vector2.new(1, 0), Position = UDim2.new(1, -12, 0, 9), Size = UDim2.fromOffset(40, 22),
 			BackgroundColor3 = options.Color, Parent = frame,
-		}, { Corner(5), Stroke("Stroke") })
+		}, { Corner(7), Stroke("Stroke") })
 		local header = Create("TextButton", { Size = UDim2.new(1, 0, 0, 40), ZIndex = 5, Parent = frame })
 		Hoverable(frame, stroke)
 
@@ -1275,23 +1367,23 @@ AddElements = function(target, page)
 		local sv = Create("Frame", {
 			Position = UDim2.fromOffset(12, 48), Size = UDim2.new(1, -24, 0, 90),
 			BackgroundColor3 = Color3.fromHSV(h, 1, 1), Parent = frame,
-		}, { Corner(5) })
+		}, { Corner(7) })
 		-- white -> transparent (saturation), then transparent -> black (value)
 		Create("Frame", { Size = UDim2.fromScale(1, 1), BackgroundColor3 = Color3.new(1, 1, 1), Parent = sv }, {
-			Corner(5),
+			Corner(7),
 			Create("UIGradient", { Transparency = NumberSequence.new(0, 1) }),
 		})
 		Create("Frame", { Size = UDim2.fromScale(1, 1), BackgroundColor3 = Color3.new(0, 0, 0), Parent = sv }, {
-			Corner(5),
+			Corner(7),
 			Create("UIGradient", { Rotation = 90, Transparency = NumberSequence.new(1, 0) }),
 		})
 		local svKnob = Create("Frame", {
 			AnchorPoint = Vector2.new(0.5, 0.5), Size = UDim2.fromOffset(10, 10), BackgroundTransparency = 1, ZIndex = 4, Parent = sv,
-		}, { Corner(5), Create("UIStroke", { Color = Color3.new(1, 1, 1), Thickness = 2 }) })
+		}, { Corner(7), Create("UIStroke", { Color = Color3.new(1, 1, 1), Thickness = 2 }) })
 
 		local hue = Create("Frame", {
 			Position = UDim2.fromOffset(12, 146), Size = UDim2.new(1, -24, 0, 10), BackgroundColor3 = Color3.new(1, 1, 1), Parent = frame,
-		}, { Corner(5), Create("UIGradient", { Color = ColorSequence.new({
+		}, { Corner(7), Create("UIGradient", { Color = ColorSequence.new({
 			ColorSequenceKeypoint.new(0, Color3.fromHSV(0, 1, 1)), ColorSequenceKeypoint.new(0.17, Color3.fromHSV(0.17, 1, 1)),
 			ColorSequenceKeypoint.new(0.33, Color3.fromHSV(0.33, 1, 1)), ColorSequenceKeypoint.new(0.5, Color3.fromHSV(0.5, 1, 1)),
 			ColorSequenceKeypoint.new(0.67, Color3.fromHSV(0.67, 1, 1)), ColorSequenceKeypoint.new(0.83, Color3.fromHSV(0.83, 1, 1)),
@@ -1300,12 +1392,12 @@ AddElements = function(target, page)
 		local hueKnob = Create("Frame", {
 			AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0, 0.5), Size = UDim2.fromOffset(6, 16),
 			BackgroundColor3 = Color3.new(1, 1, 1), Parent = hue,
-		}, { Corner(3), Create("UIStroke", { Color = Color3.new(0, 0, 0), Thickness = 1, Transparency = 0.6 }) })
+		}, { Corner(5), Create("UIStroke", { Color = Color3.new(0, 0, 0), Thickness = 1, Transparency = 0.6 }) })
 
 		local hexBox = Create("TextBox", {
 			Text = "", TextSize = 12, Position = UDim2.fromOffset(12, 164), Size = UDim2.new(1, -24, 0, 26), BackgroundTransparency = 0,
 			ClearTextOnFocus = false, Theme = { BackgroundColor3 = "Background" }, Parent = frame,
-		}, { Corner(5), Stroke("Stroke") })
+		}, { Corner(7), Stroke("Stroke") })
 
 		local function Apply(silent)
 			local color = Color3.fromHSV(h, s, v)
