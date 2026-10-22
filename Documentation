@@ -82,6 +82,8 @@ Window:Destroy()
 
 Every window opens on a built-in Home tab with a session timer, online-friend count, and Discord invite button. The timer starts when `CreateWindow` runs; this client-side library cannot determine how long the player was in the server before it loaded. The friends count refreshes every 60 seconds. The Discord button needs clipboard support in the environment; it shows an error notification if copying is unavailable.
 
+The top bar and sidebar use translucent backgrounds with a subtle blur. Roblox applies `BlurEffect` to the 3D scene globally, so the blur is not limited to only those UI regions.
+
 ## Tabs and sections
 
 ```lua
