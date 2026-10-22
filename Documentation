@@ -10,7 +10,7 @@
 - Reliable and stable
 - Beautiful design
 - Open source
-- Useful features like a key system, custom configs, notifications, and themes
+- Useful features like a key system, custom configs, and notifications
 - Smooth performance
 
 *Now Let's Get Started, Shall We?*
@@ -37,10 +37,9 @@ local Lumen = loadstring(game:HttpGet("https://raw.githubusercontent.com/siabhen
 6. [Notifications](#notifications)
 7. [Key system](#key-system)
 8. [Configuration saving](#configuration-saving)
-9. [Themes](#themes)
-10. [Flags and `Lumen.Options`](#flags-and-lumenoptions)
-11. [Cleanup](#cleanup)
-12. [Full example](#full-example)
+9. [Flags and `Lumen.Options`](#flags-and-lumenoptions)
+10. [Cleanup](#cleanup)
+11. [Full example](#full-example)
 
 ## Creating a window
 
@@ -78,16 +77,19 @@ Window:SetToggleKey(Enum.KeyCode.K)
 Window:Destroy()
 ```
 
+The toggle key continues to work while the window is hidden, including after pressing the close button.
+
 ## Built-in Home tab
 
 Every window opens on a built-in Home tab with a session timer, online-friend count, and Discord invite button. The timer starts when `CreateWindow` runs; this client-side library cannot determine how long the player was in the server before it loaded. The friends count refreshes every 60 seconds. The Discord button needs clipboard support in the environment; it shows an error notification if copying is unavailable.
 
-The top bar and sidebar use translucent backgrounds with a subtle blur. Roblox applies `BlurEffect` to the 3D scene globally, so the blur is not limited to only those UI regions.
+The interface uses solid, opaque backgrounds and does not add a global blur effect.
 
 ## Tabs and sections
 
 ```lua
-local Main = Window:CreateTab({ Name = "Main", Icon = "★" }) -- Icon is optional, any short text or emoji
+local Main = Window:CreateTab({ Name = "Main", Icon = "home", IconSource = "Material" })
+local Visuals = Window:CreateTab({ Name = "Visuals", Icon = "★" }) -- Text and emoji icons are also supported.
 
 Main:CreateSection("Combat") -- returns a Section
 ```
@@ -104,6 +106,10 @@ Section:CreateButton({ Name = "Hello" })
 Sections add a heading. Elements keep appearing in the order you create them.
 
 `Tab:Activate()` switches to a tab. The first tab you create opens automatically.
+
+Set `IconSource = "Material"` to use a Material icon by name. Supported names are `account_circle`, `bolt`, `check_circle`, `code`, `dashboard`, `favorite`, `help`, `help_outline`, `home`, `info`, `lock`, `menu`, `notifications`, `palette`, `people`, `search`, `settings`, `star`, and `visibility`. You can also provide a numeric Roblox asset ID (as a number or digit string) for other Material assets. Without `IconSource`, `Icon` is rendered as text.
+
+The mapped Material icon assets are credited to qweery; their images are loaded from Roblox asset IDs.
 
 ## Elements
 
@@ -307,24 +313,6 @@ One call builds a full config UI (create, load, overwrite, autoload, refresh):
 ```lua
 local Settings = Window:CreateTab({ Name = "Settings" })
 Lumen:BuildConfigSection(Settings)
-```
-
-## Themes
-
-Built-in themes: `Dark`, `Midnight`, `Rose`, `Emerald`, `Light`.
-
-```lua
-Lumen:SetTheme("Midnight")
-Lumen:SetTheme({ Accent = Color3.fromRGB(255, 120, 80) }) -- override single colours
-Lumen:GetTheme()
-```
-
-Theme keys: `Background`, `Surface`, `Element`, `ElementHover`, `Stroke`, `Hover`, `Text`, `SubText`, `Accent`, `Success`, `Warning`, `Danger`.
-
-Prebuilt theme switcher with a theme dropdown and accent colour picker:
-
-```lua
-Lumen:BuildThemeSection(Settings)
 ```
 
 ## Flags and Lumen.Options
