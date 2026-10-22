@@ -2,7 +2,11 @@
 
 <img src="lumen-cover.svg" alt="Lumen Interface Suite — a clean, dependency-free UI library for Roblox" width="100%">
 
-**A clean, dependency-free UI library for Roblox**
+# Lumen Interface Suite
+
+### A clean, dependency-free UI library for Roblox
+
+Create polished Roblox interfaces with an approachable Lua API, built-in themes, and no external assets.
 
 [![Version](https://img.shields.io/badge/version-1.0.0-6c7cff?style=flat-square)](CHANGELOG.md)
 [![Platform](https://img.shields.io/badge/platform-Roblox-00A2FF?style=flat-square&logo=roblox&logoColor=white)](https://www.roblox.com/)
@@ -11,28 +15,21 @@
 
 </div>
 
-## Introduction
+## Get started
 
-Create polished Roblox interfaces with a simple Lua API, built-in themes, and no external assets. This documentation covers release `1.0.0`.
+Replace `YOUR_USER/YOUR_REPO` with your GitHub username and repository, then copy the loader:
 
-### Why choose Lumen?
+```lua
+local Lumen = loadstring(game:HttpGet("https://raw.githubusercontent.com/YOUR_USER/YOUR_REPO/refs/heads/main/source.lua", true))()
+```
 
-- **Reliable and stable** — callbacks are protected so an error in one callback does not interrupt the library.
-- **Beautiful by default** — rounded controls, smooth transitions, and five built-in themes.
-- **Open source** — MIT licensed and easy to read or customize.
-- **Dependency-free** — no hosted models, icon packs, or extra HTTP requests.
-- **Packed with features** — key system, config saving, notifications, searchable dropdowns, and color picker.
-- **Smooth performance** — event-driven behavior without per-frame loops.
+GitHub adds a **Copy** button to code blocks like this one.
 
-*Now let's get started.*
+## Why choose Lumen?
 
-> Use GitHub's table of contents to jump to any section in the API guide.
-
-## Quick start
-
-1. Add [`source.lua`](source.lua) to your GitHub repository.
-2. Replace `YOUR_USER/YOUR_REPO` in the loader below with your GitHub details.
-3. See the [complete example](example.lua) for a working interface.
+| ✨ **Polished design** | 🧩 **Rich controls** |
+| --- | --- |
+| Rounded UI, smooth transitions, and five built-in themes.<br><br>⚡ **Lightweight:** event-driven, with no per-frame loops or external assets. | Buttons, toggles, sliders, inputs, dropdowns, color pickers, and more.<br><br>🛠️ **Ready-to-use:** notifications, key system, config saving, and autoload. |
 
 ## Table of contents
 
