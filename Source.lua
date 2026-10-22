@@ -20,6 +20,7 @@ local UserInputService = game:GetService("UserInputService")
 local RunService = game:GetService("RunService")
 local HttpService = game:GetService("HttpService")
 local CoreGui = game:GetService("CoreGui")
+local Lighting = game:GetService("Lighting")
 
 local LocalPlayer = Players.LocalPlayer
 
@@ -86,6 +87,7 @@ Lumen.Themes = Themes
 local Connections = {}
 local ThemeListeners = {}
 local Registry = setmetatable({}, { __mode = "k" }) -- instance -> { Property = ThemeKey }
+local WindowBlur
 
 local function Track(connection)
 	Connections[#Connections + 1] = connection
@@ -392,6 +394,14 @@ function Lumen:CreateWindow(settings)
 
 	Lumen.Folder = settings.ConfigFolder
 
+	if WindowBlur then
+		WindowBlur:Destroy()
+	end
+	WindowBlur = Instance.new("BlurEffect")
+	WindowBlur.Name = "LumenWindowBlur"
+	WindowBlur.Size = 5
+	WindowBlur.Parent = Lighting
+
 	local Window = { Tabs = {}, Visible = true, ToggleKey = settings.ToggleKey }
 	local viewport = workspace.CurrentCamera and workspace.CurrentCamera.ViewportSize or Vector2.new(1280, 720)
 	local width = math.min(settings.Size.X.Offset, viewport.X - 40)
@@ -401,10 +411,15 @@ function Lumen:CreateWindow(settings)
 		Name = "Window", AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.5),
 		Size = UDim2.fromOffset(width, height), ClipsDescendants = true,
 		Theme = { BackgroundColor3 = "Background" }, Parent = Gui,
-	}, { Corner(14), Stroke("Stroke") })
+	}, { Corner(16), Stroke("Stroke") })
 
 	local Topbar = Create("Frame", {
-		Name = "Topbar", Size = UDim2.new(1, 0, 0, 44), Theme = { BackgroundColor3 = "Surface" }, Parent = Main,
+		Name = "Topbar", Size = UDim2.new(1, 0, 0, 44), BackgroundTransparency = 0.16,
+		ClipsDescendants = true, Theme = { BackgroundColor3 = "Surface" }, Parent = Main,
+	}, { Corner(16) })
+	Create("Frame", {
+		Name = "BottomFill", Position = UDim2.new(0, 0, 0, 16), Size = UDim2.new(1, 0, 1, -16),
+		BackgroundTransparency = 0.16, Theme = { BackgroundColor3 = "Surface" }, Parent = Topbar,
 	})
 	Create("Frame", {
 		AnchorPoint = Vector2.new(0, 1), Position = UDim2.fromScale(0, 1), Size = UDim2.new(1, 0, 0, 1),
@@ -442,7 +457,12 @@ function Lumen:CreateWindow(settings)
 
 	local Sidebar = Create("Frame", {
 		Name = "Sidebar", Position = UDim2.fromOffset(0, 44), Size = UDim2.new(0, 158, 1, -44),
+		BackgroundTransparency = 0.16, ClipsDescendants = true,
 		Theme = { BackgroundColor3 = "Surface" }, Parent = Main,
+	}, { Corner(16) })
+	Create("Frame", {
+		Name = "TopFill", Size = UDim2.new(1, 0, 0, 16), BackgroundTransparency = 0.16,
+		Theme = { BackgroundColor3 = "Surface" }, Parent = Sidebar,
 	})
 	Create("Frame", {
 		AnchorPoint = Vector2.new(1, 0), Position = UDim2.fromScale(1, 0), Size = UDim2.new(0, 1, 1, 0),
@@ -461,13 +481,14 @@ function Lumen:CreateWindow(settings)
 	local Overlay = Create("Frame", { -- key system / modal layer
 		Name = "Overlay", Size = UDim2.fromScale(1, 1), Theme = { BackgroundColor3 = "Background" },
 		Visible = false, ZIndex = 50, Parent = Main,
-	})
+	}, { Corner(16) })
 
 	-- Visibility ----------------------------------------------------
 	local minimized = false
 	function Window:SetVisible(state)
 		Window.Visible = state
 		Main.Visible = state
+		if WindowBlur then WindowBlur.Enabled = state end
 	end
 	function Window:Toggle() Window:SetVisible(not Window.Visible) end
 
@@ -616,7 +637,7 @@ function Lumen:CreateWindow(settings)
 		for _, other in ipairs(Window.Tabs) do
 			local active = other == tab
 			other.Page.Visible = active
-			Tween(other.Button, { BackgroundTransparency = active and 0 or 1 }, 0.15)
+			Tween(other.Button, { BackgroundTransparency = active and 0.2 or 1 }, 0.15)
 			Tween(other.Label, { TextColor3 = active and Theme.Text or Theme.SubText }, 0.15)
 			Tween(other.Bar, { BackgroundTransparency = active and 0 or 1 }, 0.15)
 		end
@@ -1664,6 +1685,10 @@ function Lumen:Destroy()
 	table.clear(Connections)
 	table.clear(ThemeListeners)
 	Gui:Destroy()
+	if WindowBlur then
+		WindowBlur:Destroy()
+		WindowBlur = nil
+	end
 end
 
 return Lumen
