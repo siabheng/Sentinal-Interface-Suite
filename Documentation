@@ -1,22 +1,35 @@
+<div align="center">
+
 # Lumen Interface Suite
 
-> A clean, dependency-free UI library for Roblox.
-> **This documentation is up to date for release `1.0.0`.**
+### A clean, dependency-free UI library for Roblox.
 
-Use the GitHub table-of-contents button (top right of this file) to navigate.
+Build polished in-game interfaces with an approachable Lua API, built-in themes, and no external assets.
 
-## Introduction
+![Version](https://img.shields.io/badge/version-1.0.0-6c7cff?style=for-the-badge)
+![Platform](https://img.shields.io/badge/platform-Roblox-00A2FF?style=for-the-badge&logo=roblox&logoColor=white)
+![Language](https://img.shields.io/badge/language-Lua-5865F2?style=for-the-badge)
+![License](https://img.shields.io/badge/license-MIT-22c55e?style=for-the-badge)
 
-### Why choose Lumen?
+</div>
 
-- **Reliable and stable.** Every callback is wrapped in `pcall`, so one bad callback never breaks your script.
-- **Beautiful design.** Rounded cards, smooth tweens, five built-in themes and live theme switching.
-- **Open source.** MIT licensed, a single readable file.
-- **Zero dependencies.** No hosted models, no icon packs and no extra HTTP requests. Every control is built in code.
-- **Real features.** Key system, config saving with autoload, notifications, searchable dropdowns and a color picker.
-- **Smooth performance.** No per-frame loops. Everything is event-driven.
+---
 
-Now let's get started.
+## Why Lumen?
+
+| Designed for developers | Ready to use |
+| --- | --- |
+| **Simple to integrate** — one readable source file and no dependencies. | **Rich controls** — buttons, toggles, sliders, inputs, binds, dropdowns, and more. |
+| **Event-driven** — no per-frame loops. | **Flexible appearance** — five built-in themes and live theme switching. |
+| **Easy to customize** — callbacks, flags, and element methods. | **Built-in utilities** — notifications, key system, and config management. |
+
+> **Current release:** `1.0.0` · See the [changelog](CHANGELOG.md) for release details.
+
+## Get started
+
+1. Add [`source.lua`](source.lua) to your GitHub repository.
+2. Replace `YOUR_USER/YOUR_REPO` in the [boot snippet](#booting-the-library) with your repository details.
+3. Follow the [full example](example.lua) or continue to the API guide below.
 
 ## Table of contents
 
