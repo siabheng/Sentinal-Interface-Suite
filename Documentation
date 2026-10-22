@@ -1,35 +1,38 @@
 <div align="center">
 
-# Lumen Interface Suite
+<img src="lumen-cover.svg" alt="Lumen Interface Suite — a clean, dependency-free UI library for Roblox" width="100%">
 
-### A clean, dependency-free UI library for Roblox.
+**A clean, dependency-free UI library for Roblox**
 
-Build polished in-game interfaces with an approachable Lua API, built-in themes, and no external assets.
-
-![Version](https://img.shields.io/badge/version-1.0.0-6c7cff?style=for-the-badge)
-![Platform](https://img.shields.io/badge/platform-Roblox-00A2FF?style=for-the-badge&logo=roblox&logoColor=white)
-![Language](https://img.shields.io/badge/language-Lua-5865F2?style=for-the-badge)
-![License](https://img.shields.io/badge/license-MIT-22c55e?style=for-the-badge)
+[![Version](https://img.shields.io/badge/version-1.0.0-6c7cff?style=flat-square)](CHANGELOG.md)
+[![Platform](https://img.shields.io/badge/platform-Roblox-00A2FF?style=flat-square&logo=roblox&logoColor=white)](https://www.roblox.com/)
+[![Language](https://img.shields.io/badge/language-Lua-5865F2?style=flat-square)](source.lua)
+[![License](https://img.shields.io/badge/license-MIT-22c55e?style=flat-square)](LICENSE)
 
 </div>
 
----
+## Introduction
 
-## Why Lumen?
+Create polished Roblox interfaces with a simple Lua API, built-in themes, and no external assets. This documentation covers release `1.0.0`.
 
-| Designed for developers | Ready to use |
-| --- | --- |
-| **Simple to integrate** — one readable source file and no dependencies. | **Rich controls** — buttons, toggles, sliders, inputs, binds, dropdowns, and more. |
-| **Event-driven** — no per-frame loops. | **Flexible appearance** — five built-in themes and live theme switching. |
-| **Easy to customize** — callbacks, flags, and element methods. | **Built-in utilities** — notifications, key system, and config management. |
+### Why choose Lumen?
 
-> **Current release:** `1.0.0` · See the [changelog](CHANGELOG.md) for release details.
+- **Reliable and stable** — callbacks are protected so an error in one callback does not interrupt the library.
+- **Beautiful by default** — rounded controls, smooth transitions, and five built-in themes.
+- **Open source** — MIT licensed and easy to read or customize.
+- **Dependency-free** — no hosted models, icon packs, or extra HTTP requests.
+- **Packed with features** — key system, config saving, notifications, searchable dropdowns, and color picker.
+- **Smooth performance** — event-driven behavior without per-frame loops.
 
-## Get started
+*Now let's get started.*
+
+> Use GitHub's table of contents to jump to any section in the API guide.
+
+## Quick start
 
 1. Add [`source.lua`](source.lua) to your GitHub repository.
-2. Replace `YOUR_USER/YOUR_REPO` in the [boot snippet](#booting-the-library) with your repository details.
-3. Follow the [full example](example.lua) or continue to the API guide below.
+2. Replace `YOUR_USER/YOUR_REPO` in the loader below with your GitHub details.
+3. See the [complete example](example.lua) for a working interface.
 
 ## Table of contents
 
