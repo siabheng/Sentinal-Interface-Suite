@@ -871,10 +871,19 @@ AddElements = function(target, page)
 
 		local frame, stroke = Card(page, 40, target:NextOrder())
 		TitleAndDesc(frame, options.Name, options.Description, 50)
-		Create("TextLabel", {
-			Text = "›", Font = Enum.Font.GothamBold, TextSize = 20, AnchorPoint = Vector2.new(1, 0.5),
-			Position = UDim2.new(1, -12, 0.5, 0), Size = UDim2.fromOffset(16, 20), Theme = { TextColor3 = "SubText" }, Parent = frame,
+		local arrow = Create("Frame", {
+			Name = "Arrow", AnchorPoint = Vector2.new(0.5, 0.5),
+			Position = UDim2.new(1, -20, 0.5, 0), Size = UDim2.fromOffset(16, 16),
+			BackgroundTransparency = 1, Parent = frame,
 		})
+		for index, rotation in ipairs({ 45, -45 }) do
+			Create("Frame", {
+				AnchorPoint = Vector2.new(0.5, 0.5),
+				Position = UDim2.fromOffset(8, index == 1 and 4 or 12),
+				Size = UDim2.fromOffset(8, 2), Rotation = rotation,
+				Theme = { BackgroundColor3 = "SubText" }, Parent = arrow,
+			}, { Corner(1) })
+		end
 		local click = Create("TextButton", { Size = UDim2.fromScale(1, 1), ZIndex = 5, Parent = frame })
 		Hoverable(frame, stroke)
 
@@ -1207,11 +1216,19 @@ AddElements = function(target, page)
 			Size = UDim2.new(0, 150, 0, closedHeight), TextXAlignment = Enum.TextXAlignment.Right,
 			TextTruncate = Enum.TextTruncate.AtEnd, Theme = { TextColor3 = "SubText" }, Parent = frame,
 		})
-		local chevron = Create("TextLabel", {
-			Text = "⌄", Font = Enum.Font.GothamBold, TextSize = 16, AnchorPoint = Vector2.new(1, 0),
-			Position = UDim2.new(1, -10, 0, 0), Size = UDim2.fromOffset(18, closedHeight),
-			Theme = { TextColor3 = "SubText" }, Parent = frame,
+		local chevron = Create("Frame", {
+			Name = "Chevron", AnchorPoint = Vector2.new(0.5, 0.5),
+			Position = UDim2.new(1, -18, 0, closedHeight / 2), Size = UDim2.fromOffset(16, 16),
+			BackgroundTransparency = 1, Parent = frame,
 		})
+		for index, rotation in ipairs({ 45, -45 }) do
+			Create("Frame", {
+				AnchorPoint = Vector2.new(0.5, 0.5),
+				Position = UDim2.fromOffset(index == 1 and 4 or 12, 8),
+				Size = UDim2.fromOffset(8, 2), Rotation = rotation,
+				Theme = { BackgroundColor3 = "SubText" }, Parent = chevron,
+			}, { Corner(1) })
+		end
 		local header = Create("TextButton", { Size = UDim2.new(1, 0, 0, closedHeight), ZIndex = 5, Parent = frame })
 
 		local search = Create("TextBox", {
